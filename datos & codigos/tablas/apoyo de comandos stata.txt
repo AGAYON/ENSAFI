@@ -1,0 +1,10 @@
+
+MERGE
+merge == 1 (si la observación solo estaba en
+            la primera tabla y se elimina)
+merge == 2 (si la observación solo estaba en
+            la segunda tabla y se elimina)
+merge == 3 (si la observación estaba en ambas
+            tablas y se mantienen)   
+
+

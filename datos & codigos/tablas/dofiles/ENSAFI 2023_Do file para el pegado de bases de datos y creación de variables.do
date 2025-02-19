@@ -21,6 +21,7 @@ merge 1:m llaveviv using "TSDEM.dta"
 m:1 significa que varias observaciones en la base activa coinciden con una en la base using.
 */
 keep if _merge==3
+*_merge == 1 : si la observacion en 
 tab _merge
 drop _merge
 sort llavehog llaveviv
