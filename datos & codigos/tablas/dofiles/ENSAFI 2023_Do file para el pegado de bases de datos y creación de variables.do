@@ -1,7 +1,7 @@
 ****TRABAJANDO CON LA ENSAFI 2023
 
 ****PROGRAMA PARA EL PEGADO DE LAS BASES DE DATOS
-cd "C:/SEM 8/bloque multidisciplinar/datos/tablas"
+cd "C:/SEM 8/bloque multidisciplinar/datos & codigos/tablas/dtas"
 /*Permite que Stata acceda directamente a los archivos ubicados en esa carpeta sin necesidad de escribir la ruta completa en cada comando.
 Es útil para organizar el trabajo y asegurarse de que los archivos de entrada y salida (como bases de datos, do-files o logs) se guarden en el lugar correcto.
 Si después de ejecutar este comando ejecutas dir, Stata te mostrará los archivos disponibles en esa carpeta.*/

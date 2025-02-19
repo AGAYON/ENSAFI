@@ -1,0 +1,41 @@
+NOTA: REVISAR SIEMRPE LOS FACTORES DE EXPANSIÓN
+DE CADA TABLA PARA LOS PEGADOS
+
+
+TVIVIENDA
+- llave primaria : LLAVEVIV
+SECCION 1 .- características de la vivienda
+SECCION 2 .-identificación de los hogares
+- Variables relevantes: 
+    - 
+    -
+
+
+
+THOGAR
+- llave primaria : LLAVEHOG
+- llave foránea : LLAVEVIV
+SECCION 3 .-socioeconomía del hogar
+- Variables relevantes: 
+    -
+    -
+
+
+TSDEM
+- llave primaria: LLAVESDE
+- llave foránea : LLAVEVIV, LLAVEHOG
+SECCION 4 .-sociodemografía de las personas del hogar
+- Variables relevantes: 
+
+
+TMODULO
+- llave primaria : LLAVEMOD
+- llave foránea : LLAVEVIV, LLAVEHOG
+SECCION 5 .-características personales y laborales
+SECCION 6 .-deuda, ahorro y gasto individual
+SECCION 7 .-conductas financieras y factores psicológicos
+SECCION 8 .-estrés financiero 
+SECCION 9 .-metas financieras
+SECCION 10 .-comentarios sobre condusef y temas de interés
+- Variables relevantes: 
+
