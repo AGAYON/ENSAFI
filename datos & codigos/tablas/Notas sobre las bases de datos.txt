@@ -3,29 +3,32 @@ DE CADA TABLA PARA LOS PEGADOS
 
 
 TVIVIENDA
-- llave primaria : LLAVEVIV
+- llave primaria : llaveviv
 SECCION 1 .- características de la vivienda
+    - P1_9: sobre el pago de hipoteca
 SECCION 2 .-identificación de los hogares
-- Variables relevantes: 
-    - 
-    -
+    - P2_1: # personas por vivienda
+    - fac_viv: factor de vivienda
 
 
 
 THOGAR
-- llave primaria : LLAVEHOG
-- llave foránea : LLAVEVIV
-SECCION 3 .-socioeconomía del hogar
-- Variables relevantes: 
-    -
-    -
+- llave primaria : llavehog
+- llave foránea : llaveviv
+SECCION 4 .-socioeconomía del hogar
+    - P4_1_1: apoyos de gobierno en hogar
+    - P4_3: rango de ingreso mensual por hogar
+    - P4_5_2: tarjeta de crédito en el hogar
+    - P4_6_x: ahorros
+    _ P4_7_x: deudas
+    - fac_hog: factor de expansión hogar
+
 
 
 TSDEM
 - llave primaria: LLAVESDE
 - llave foránea : LLAVEVIV, LLAVEHOG
 SECCION 4 .-sociodemografía de las personas del hogar
-- Variables relevantes: 
 
 
 TMODULO
@@ -33,9 +36,17 @@ TMODULO
 - llave foránea : LLAVEVIV, LLAVEHOG
 SECCION 5 .-características personales y laborales
 SECCION 6 .-deuda, ahorro y gasto individual
+    - AQUÍ ESTÁN LAS VARIABLES RELEVANTES A
+    DIMENSIONES DE SALUD FINANCIERA
 SECCION 7 .-conductas financieras y factores psicológicos
+    - TAMBIEN AQUÍ
 SECCION 8 .-estrés financiero 
+    - Y AQUI
 SECCION 9 .-metas financieras
+    - Y AQUI
 SECCION 10 .-comentarios sobre condusef y temas de interés
-- Variables relevantes: 
 
+    - FACTOR DE EXPANSIÓN TMODULO: fac_ele
+
+Revisar las variables derivadas en TMODULO,
+ya tienen variables de medición elaboradas
