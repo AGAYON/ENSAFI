@@ -6,3 +6,6 @@ Objetivo: medir la salud financiera
     y controlarlas por ubicación geográfica
     y riesgos ecológicos (huracanes e inundaciones)
 
+para medir los riesgos ecológicos usar frecuencia
+de desastres naturales por entidad, ya que ENSAFI
+está por entidad
