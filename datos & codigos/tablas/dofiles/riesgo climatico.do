@@ -79,7 +79,7 @@ restore //recupera el dataset original sin cambios en la memoria
 //////////////////////////////////////////
 
 use vulnerabilidades_estados.dta, clear
-preserve //guardar el estado original en la memoria
+preserve  // Guardar el estado original en memoria
 
 // Crear una variable de porcentaje de personas sin ahorros por entidad
 gen no_puede_ahorrar = (puede_emergencia_ahorros == 0)
@@ -95,24 +95,25 @@ gen otros_estados = no_puede_ahorrar if !inlist(ent, 7, 12, 20, 30, 27)
 // Ordenar los datos de mayor a menor porcentaje
 gsort -no_puede_ahorrar
 
-// Graficar barras con ajustes de espacio y legibilidad
-graph bar (asis) otros_estados riesgo_climatico, ///
-    over(estado, sort(no_puede_ahorrar) label(angle(60) size(small))) /// Aumentar ángulo y reducir tamaño de etiquetas
-    bar(1, color(gs8) lcolor(black)) /// Color gris para entidades normales
-    bar(2, color(red) lcolor(black)) /// Color rojo para estados con riesgo climático
-    blabel(bar, format(%9.1f) size(vsmall)) /// Hacer más pequeñas las etiquetas de valores
-    barwidth(0.7) /// Hacer las barras más delgadas para mayor separación
-    title("Porcentaje de personas sin ahorros para emergencias") ///
-    subtitle("Ante contingencias equivalentes a un mes de ingresos") ///
-    ytitle("Porcentaje") ///
+// Graficar barras con etiquetas del nombre del estado y colores diferenciados
+graph bar (asis) riesgo_climatico otros_estados, /// Cambié el orden para que los valores más altos queden a la izquierda
+    over(estado, sort(no_puede_ahorrar) descending label(angle(45) labsize(vsmall))) /// Reducí el ángulo a 45° para mejor lectura
+    bar(1, color(red) lcolor(black)) /// Color rojo para estados con concentración de riesgo climático
+    bar(2, color(gs8) lcolor(black)) /// Color gris para otros estados
+    blabel(bar, format(%9.1f) size(vsmall)) /// Hacer más visibles las etiquetas de valores
+    title("Porcentaje de personas sin ahorros para emergencias", size(medium)) /// Tamaño medio para mejor distribución
+    subtitle("Ante contingencias equivalentes a un mes de ingresos", size(small)) ///
+    ytitle(" ", size(medium)) ///
     ylabel(, angle(0)) ///
-    legend(order(2 "Estados con concentración de riesgo climático" 1 "Otros estados")) ///
-    ysize(8) /// Aumentar la altura de la imagen
-    graphregion(margin(l=10 r=10 t=5 b=5)) /// Agregar margen para evitar etiquetas cortadas
+    legend(order(1 "Estados con concentración de riesgo climático") size(small)) /// Ajuste en tamaño de leyenda
+    ysize(6) xsize(12) /// Aumentar el ancho para más espacio horizontal
+    graphregion(margin(l=15 r=15 t=5 b=10)) /// Agregar más margen lateral para evitar etiquetas cortadas
+    plotregion(margin(l=5 r=5)) /// Espacio adicional dentro del área de la gráfica
+
+restore  // Recuperar el dataset original
 
 
 
-restore // recupera el dataset original en la memoria
 
 
 //////////////////////////////////////////
