@@ -114,20 +114,47 @@ restore  // Recuperar el dataset original
 
 
 
-
-
 //////////////////////////////////////////
-// Distribución monto máximo de deuda mensual
+// % de personas en los estados mecionados que no tienen una
 //////////////////////////////////////////
 
+use vulnerabilidades_estados.dta, clear
+preserve  // Guardar el estado original en memoria
 
-**** notas para continuar
-* Averiguar como hacer bien los pegados de tablas para generar variables
+// Filtrar solo las observaciones donde ent es 7, 12, 20, 30 o 27
+keep if inlist(ent, 7, 12, 20, 30, 27)
+
+// Crear una tabla de frecuencia de la variable seguro
+gen seguro_categoria = "No tiene seguro" if seguro == 0  // INVERTIDO
+replace seguro_categoria = "Sí tiene seguro" if seguro == 1  // INVERTIDO
+
+// Contar la cantidad de personas con y sin seguro
+contract seguro_categoria, freq(frecuencia)
+
+// Graficar el pie chart
+graph pie frecuencia, ///
+    over(seguro_categoria) ///
+    plabel(_all percent, size(vsmall)) ///
+    title("Distribución del seguro en regiones seleccionadas", size(medium)) ///
+    legend(order(1 "No tiene seguro" 2 "Sí tiene seguro") size(small)) /// INVERTIDO
+    graphregion(margin(l=10 r=10 t=5 b=5)) /// Márgenes para evitar etiquetas cortadas
+    pie(1, color(red)) pie(2, color(green)) /// Rojo = No tiene seguro, Verde = Sí tiene seguro
+
+restore  // Recuperar el dataset original
 
 
-* usar una base de datos con altura sobre nivel de mar y niveles de precipitación en México controlados por AGEBs
 
-* Pegar la base anterior a las tablas de 
+
+
+
+
+
+
+
+
+
+
+
 
 
 
