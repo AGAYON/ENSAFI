@@ -30,7 +30,7 @@ replace rango_edad=4 if edad_v>=65 & edad_v<=98
 label define grupos_edad_lbl 1 "18-29 años" 2 "30-49 años" 3 "50-64 años" 4 "65 años o más"
 label values rango_edad grupos_edad_lbl
 
-*generando la variable educación "educacion"
+*generando la variable educación por niveles "educacion"
 /*3.8 ¿Hasta qué año o grado aprobó (NOMBRE) en la escuela?		
 00	Ninguno
 01	Preescolar o kínder
@@ -59,6 +59,76 @@ replace educacion=8 if niv==8
 replace educacion=9 if niv==9
 replace educacion=10 if niv==10
 replace educacion=11 if niv==11
+
+*Creando la variable educación continua "educ"
+/*3.8 ¿Hasta qué año o grado aprobó (NOMBRE) en la escuela?		
+00	Ninguno
+01	Preescolar o kínder
+02	Primaria
+03	Secundaria
+04	Normal básica
+05	Estudios técnicos con secundaria terminada
+06	Preparatoria o bachillerato
+07	Estudios técnicos con preparatoria terminada
+08	Licenciatura o ingenieria (profesional)
+09	Especialidad
+10	Maestría
+11	Doctorado
+99	No sabe  
+b	Blanco por secuencia*/
+destring niv gra, replace
+gen educ=.
+replace educ = 0 if niv == 0 & gra==0
+replace educ = 1 if niv == 1 & gra==1
+replace educ = 2 if niv == 1 & gra==2
+replace educ = 3 if niv == 1 & gra==3
+replace educ = 4 if niv == 2 & gra==1
+replace educ = 5 if niv == 2 & gra==2
+replace educ = 6 if niv == 2 & gra==3
+replace educ = 7 if niv == 2 & gra==4
+replace educ = 8 if niv == 2 & gra==5
+replace educ = 9 if niv == 2 & gra==6
+replace educ = 10 if niv == 3 & gra==1
+replace educ = 11 if niv == 3 & gra==2
+replace educ = 12 if niv == 3 & gra==3
+replace educ = 13 if niv == 4 & gra==1
+replace educ = 14 if niv == 4 & gra==2
+replace educ = 15 if niv == 4 & gra==3
+replace educ = 16 if niv == 4 & gra==4
+replace educ = 17 if niv == 5 & gra==1
+replace educ = 18 if niv == 5 & gra==2
+replace educ = 19 if niv == 5 & gra==3
+replace educ = 20 if niv == 5 & gra==4
+replace educ = 21 if niv == 6 & gra==1
+replace educ = 22 if niv == 6 & gra==2
+replace educ = 23 if niv == 6 & gra==3
+replace educ = 24 if niv == 6 & gra==4
+replace educ = 25 if niv == 7 & gra==1
+replace educ = 26 if niv == 7 & gra==2
+replace educ = 27 if niv == 7 & gra==3
+replace educ = 28 if niv == 7 & gra==4
+replace educ = 29 if niv == 8 & gra==1
+replace educ = 30 if niv == 8 & gra==2
+replace educ = 31 if niv == 8 & gra==3
+replace educ = 32 if niv == 8 & gra==4
+replace educ = 33 if niv == 8 & gra==5
+replace educ = 34 if niv == 8 & gra==6
+replace educ = 35 if niv == 8 & gra==7
+replace educ = 36 if niv == 9 & gra==1
+replace educ = 37 if niv == 9 & gra==2
+replace educ = 38 if niv == 9 & gra==3
+replace educ = 39 if niv == 10 & gra==1
+replace educ = 40 if niv == 10 & gra==2
+replace educ = 41 if niv == 11 & gra==1
+replace educ = 42 if niv == 11 & gra==2
+replace educ = 42 if niv == 11 & gra==3
+replace educ = 43 if niv == 11 & gra==4
+replace educ = 44 if niv == 11 & gra==5
+replace educ = 45 if niv == 11 & gra==6
+
+*generando educ2
+gen educ2=educ^2
+
 	
 *generando la variable rural (menor de 15 mil habitantes) y urbana (mayor de 15 mil habitantes) "rural o urbano"
 /*Tamaño de localidad	TLOC	
@@ -298,41 +368,3 @@ histogram m_s_pd_zr, discrete percent ///
     ytitle("Porcentaje") ///
     title("Distribución de mujeres solteras en el primer quintil en zonas rurales")
 	
-	
-	
-	
-	
-	/////////////////////////////////////////////////////////////////////////
-//Actividad por equipo: ahorros por region (montos promedio por region)
-// Cargar la base de datos p6_3
-use BASE_ENSAFI2023_2.dta, clear
-
-// Convertir p6_3 en variable binaria (1 = Sí, 0 = No)
-gen tiene_ahorros = (p6_3 == 1)
-
-// Calcular el porcentaje de personas con ahorros por región
-collapse (mean) tiene_ahorros, by(region)
-
-// Convertir a porcentaje
-replace tiene_ahorros = tiene_ahorros * 100
-
-// Asignar etiquetas a la variable "region"
-label define region_lbl 1 "Norte" 2 "Centro-Norte" 3 "Centro" 4 "Sur"
-label values region region_lbl
-
-// Ordenar de mayor a menor porcentaje
-gsort -tiene_ahorros
-
-// Graficar el porcentaje de personas con ahorros por región con etiquetas corregidas
-graph bar (asis) tiene_ahorros, ///
-    over(region, sort(tiene_ahorros) descending label(angle(45) labsize(small))) /// Etiquetas corregidas con nombres
-    bar(1, color(blue) lcolor(black)) /// Color azul para las barras
-    blabel(bar, format(%9.1f) size(vsmall)) /// Etiquetas dentro de las barras con valores porcentuales
-    title("Porcentaje de personas con ahorros por región", size(medium)) ///
-    ytitle("Porcentaje", size(medium)) ///
-    ylabel(, angle(0)) ///
-    ysize(6) xsize(10) /// Ajustar dimensiones para mejor visibilidad
-    graphregion(margin(l=10 r=10 t=5 b=10)) /// Márgenes adecuados
-    plotregion(margin(l=5 r=5)) /// Espacio adicional en la gráfica
-
-
