@@ -1,11 +1,14 @@
-Creo que el análisis debe de ser 
-a nivel persona dentro del hogar
 
-Objetivo: medir la salud financiera
-    mediante las variables que se tienen
-    y controlarlas por ubicación geográfica
-    y riesgos ecológicos (huracanes e inundaciones)
+Objetivo: Diagnosticar la resiliencia financiera de personas en 
+entidades con mayor riesgo por vulnerabilidad climática
+
+Metodología de SEGOB: V = Exposición + Sensibilidad - Adaptabilidad
 
 para medir los riesgos ecológicos usar frecuencia
 de desastres naturales por entidad, ya que ENSAFI
 está por entidad
+
+Para un análisis de control: 
+- que variables usar para medir resiliencia? Secciones P6 y P7
+
+Pregunta: son menos resilientes los estados encontrados por la metodología de la SEGOB? 
