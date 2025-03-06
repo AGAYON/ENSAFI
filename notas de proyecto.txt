@@ -11,4 +11,12 @@ está por entidad
 Para un análisis de control: 
 - que variables usar para medir resiliencia? Secciones P6 y P7
 
-Pregunta: son menos resilientes los estados encontrados por la metodología de la SEGOB? 
+Pregunta: son menos resilientes los estados encontrados por la metodología de la SEGOB?
+proporciones de respuestas controladas por estado vulnerable y estados no vulnerables (según la metodología) 
+
+p6_4 (categórica)= equivalencias de monto de ahorro - revisar controlando por estados
+p6_8 (categórica)= nivel de endeudamiento autopercibido
+p6_9 (binaria)= cubre sus gastos con sus ingresos si o no
+p6_13 (nivel)= monto maximo de deudas a pagar sin afectar patrimonio
+p7_6_1 - p7_6_8 (binarias)= si tuviera una emergencia equivalente a un mes de ingreso podría pagarlo?
+

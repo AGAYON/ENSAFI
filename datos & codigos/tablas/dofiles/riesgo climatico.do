@@ -57,7 +57,7 @@ replace puede_emergencia_ahorros = 0 if puede_emergencia_ahorros == 2
 replace seguro = 0 if seguro == 2
 
 //mantener las variables necesarias
-keep llaveviv llavehog llavesde llavemod estado ent sexo edad_v ingreso_m fac_ele seguro monto_ahorro monto_max_deuda puede_emergencia_ahorros
+keep llaveviv llavehog llavesde llavemod estado ent sexo edad_v ingreso_m fac_ele seguro monto_ahorro monto_max_deuda puede_emergencia_ahorros fac_ele
 
 //generar variables de vulnerabilidad según el criterio
 gen ent_vul_cambio_climatico = inlist(ent, 7, 12, 20, 30, 27)
