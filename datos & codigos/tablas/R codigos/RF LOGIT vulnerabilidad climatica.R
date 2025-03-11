@@ -71,6 +71,8 @@ SELECT
   p7_6_6 AS fin_deuda_6,
   p7_6_7 AS fin_deuda_7,
   p7_6_8 AS fin_deuda_8,
+  p5_19 AS monto_ingreso,
+  p5_19A AS frecuencia_ingreso,
   ent,
   fac_ele
 FROM tmodulo ;
@@ -78,3 +80,102 @@ FROM tmodulo ;
 
 variables_resiliencia = dbGetQuery(conexion, query)
 dbDisconnect(conexion)
+
+
+
+#si tienen seguros e indicador de salud financieras
+      # + mas variables que hemos generado para crear el logit
+#pronóstico de clasificación logit: puede hacer frente a una contingencia mayor a un 
+#mes de salario si o no
+
+
+##MODELO LOGIT
+
+# Definir lista de variables explicativas
+variables_explicativas <- c("")
+
+# Asegurar que demanda_vivienda es un factor
+modelo <- resiliencia_final %>% #Cambiar variable de acuerdo al modelo 1 o 2 (independencia o dueno )
+  mutate(demanda_vivienda = factor(dueno, levels = c(0, 1), labels = c("No", "Si")))
+
+# Separar los datos en entrenamiento y prueba
+data_split <- modelo %>%
+  initial_split(strata = demanda_vivienda) # Estratificar por la variable objetivo
+train <- training(data_split) # Datos de entrenamiento
+test <- testing(data_split)   # Datos de prueba
+
+# Seleccionar solo las columnas relevantes en los datos
+train <- train %>%
+  select(all_of(c("demanda_vivienda", variables_explicativas)))
+
+test <- test %>%
+  select(all_of(c("demanda_vivienda", variables_explicativas)))
+
+# Crear pliegues de validación cruzada
+folds <- vfold_cv(train, v = 5)
+
+# Crear una receta
+receta <- recipe(demanda_vivienda ~ ., data = train) %>%
+  update_role(all_of(variables_explicativas), new_role = "predictor") %>%
+  update_role(demanda_vivienda, new_role = "outcome") %>%
+  step_mutate(sexo = as.factor(sexo)) %>%        # Convertir sexo en factor
+  step_dummy(all_nominal_predictors()) %>%       # Crear variables dummies
+  step_impute_median(all_predictors()) %>%       # Imputar valores faltantes con la mediana
+  step_smote(demanda_vivienda) %>%               # Aplicar SMOTE después de manejar NAs
+  step_log(ingreso_mensual, offset = 0.001)                    # Remover predictores con varianza cero
+
+# Definir el modelo logístico con glmnet
+reg_logistica <- logistic_reg() %>%
+  set_engine("glmnet") %>%
+  set_mode("classification") %>%
+  set_args(penalty = tune(), mixture = tune()) # Hiperparámetros a tunear
+
+# Crear el flujo de trabajo
+modelo_logistico_glmnet <- workflow() %>%
+  add_recipe(receta) %>%
+  add_model(reg_logistica)
+
+# Ajuste de hiperparámetros mediante validación cruzada
+parametros <- modelo_logistico_glmnet %>%
+  extract_parameter_set_dials()
+
+calibracion <- modelo_logistico_glmnet %>%
+  tune_grid(
+    resamples = folds,
+    param_info = parametros,
+    grid = 300,                                # 100 combinaciones de hiperparámetros
+    metrics = metric_set(roc_auc, accuracy),   # Métricas de desempeño
+    control = control_grid(verbose = TRUE)    # Barra de progreso
+  )
+
+
+
+# Obtener las métricas de calibración
+metricas_calibracion <- calibracion %>%
+  collect_metrics()
+
+# Seleccionar el mejor modelo basado en ROC
+mejor_modelo <- calibracion %>%
+  select_best(metric = "roc_auc")
+
+# Ajuste final con los datos completos
+ajuste_final <- modelo_logistico_glmnet %>%
+  finalize_workflow(mejor_modelo) %>%
+  last_fit(data_split)
+
+# Evaluar el modelo final
+resultados_finales <- ajuste_final %>%
+  collect_metrics()
+
+# Mostrar las métricas
+print(resultados_finales)
+
+# Matriz de confusión
+ajuste_final %>%
+  collect_predictions() %>%
+  conf_mat(truth = demanda_vivienda, estimate = .pred_class)
+
+# Interpretación del modelo: predicciones y probabilidades
+resultados <- ajuste_final %>%
+  extract_workflow() %>%  # Extraer el flujo de trabajo final ajustado
+  augment(new_data = test)  # Especificar los datos sobre los cuales quieres las predicciones

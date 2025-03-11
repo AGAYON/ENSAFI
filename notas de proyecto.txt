@@ -15,8 +15,18 @@ Pregunta: son menos resilientes los estados encontrados por la metodología de l
 proporciones de respuestas controladas por estado vulnerable y estados no vulnerables (según la metodología) 
 
 p6_4 (categórica)= equivalencias de monto de ahorro - revisar controlando por estados
+    Transformación a binaria: 
+    valores (1,2) = 1 (ahorros de hasta un mes)
+    valores (3,4,5) = 0 (ahorros de mas de un mes)
 p6_8 (categórica)= nivel de endeudamiento autopercibido
 p6_9 (binaria)= cubre sus gastos con sus ingresos si o no
 p6_13 (nivel)= monto maximo de deudas a pagar sin afectar patrimonio
 p7_6_1 - p7_6_8 (binarias)= si tuviera una emergencia equivalente a un mes de ingreso podría pagarlo?
+
+variable de resiliencia usada en do file "variables de salud financiera"
+p7_8_1 (categorica)= capacidad de hacer frente a un implrevisto fuerte
+
+
+
+
 
